@@ -18,19 +18,15 @@ const Companies = () => {
   }, [])
     return (
     <div>
-      <h1>회사 목록</h1>
-      {companies.length === 0 ? (
-        <p>회사가 없습니다.</p>
-      ) : (
-        <ul>
-          {companies.map((company, index) => (
-            <li key={index}>
-              <h3>{company.name}</h3>
-              <p>설립 연도: {company.year}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <h1>시공사 목록</h1>
+      <article className='list'>
+        {companies.map((company, index) => (
+          <article key={index}>
+            <h3>{company.name}</h3>
+            <p>설립 연도: {company.year}</p>
+          </article>
+        ))}
+      </article>
     </div>
     );
   };

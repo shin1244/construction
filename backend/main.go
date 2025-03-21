@@ -16,18 +16,36 @@ type Company struct {
 
 var companyList = []Company{
 	{Name: "Company A", Year: 2020},
+	{Name: "Company B", Year: 2022},
 }
 
 func GetCompanyHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	data, _ := json.Marshal(companyList)
-	fmt.Fprint(w, string(data))
+
+	json.NewEncoder(w).Encode(companyList)
+}
+
+func PostCompanyHandler(w http.ResponseWriter, r *http.Request) {
+	var newCompany Company
+	err := json.NewDecoder(r.Body).Decode(&newCompany)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	companyList = append(companyList, newCompany)
+
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+
+	json.NewEncoder(w).Encode(newCompany)
 }
 
 func router(router *mux.Router) {
 
 	router.HandleFunc("/companies", GetCompanyHandler).Methods("GET")
+	router.HandleFunc("/companies", PostCompanyHandler).Methods("POST")
 
 	fmt.Println("서버 시작")
 
