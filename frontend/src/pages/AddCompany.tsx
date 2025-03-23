@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const AddCompany = () => {
@@ -9,20 +10,14 @@ const AddCompany = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const company = { name, year: parseInt(year) };
+    console.log(company)
 
-    // POST 요청으로 회사 정보 전송
-    const response = await fetch('http://localhost:3000/companies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(company),
-    });
-
-    if (response.ok) {
-      navigate('/companies');  // 회사 목록 페이지로 이동
-    } else {
-      alert('회사 추가에 실패했습니다.');
+    try {
+      await axios.post("http://localhost:3000/companies", company);
+      navigate("/companies"); 
+    } catch (error) {
+      console.error("회사 추가 실패:", error);
+      alert("회사 추가에 실패했습니다.");
     }
   };
 

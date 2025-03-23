@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 interface Company {
@@ -9,13 +10,13 @@ const Companies = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/companies')
-      .then(resp => resp.json())
-      .then(data => {
-        console.log(data)
-        setCompanies(data);
+    axios.get("http://localhost:3000/companies")
+      .then(res => {setCompanies(res.data)})
+      .catch(error => {
+        console.log(error)
       })
   }, [])
+  
     return (
     <div>
       <h1>시공사 목록</h1>

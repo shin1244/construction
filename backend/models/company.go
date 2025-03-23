@@ -6,10 +6,32 @@ type Company struct {
 	Year int    `json:"year"`
 }
 
-// 회사 목록을 가져오는 함수 예시
-func GetAllCompanies() []Company {
-	return []Company{
-		{ID: 1, Name: "Company A", Year: 2000},
-		{ID: 2, Name: "Company B", Year: 2010},
-	}
+type dbHandler interface {
+	getCompanies() []*Company
+	addCompany(company *Company) *Company
+	removeCompany(id int) bool
+}
+
+var handler dbHandler
+
+func newMemoryHandler() dbHandler {
+	m := &memoryHandler{}
+	m.companyMap = make(map[int]*Company)
+	return m
+}
+
+func init() {
+	handler = newMemoryHandler()
+}
+
+func GetCompanies() []*Company {
+	return handler.getCompanies()
+}
+
+func AddCompany(company *Company) *Company {
+	return handler.addCompany(company)
+}
+
+func RemoveCompany(id int) bool {
+	return handler.removeCompany(id)
 }
