@@ -14,14 +14,9 @@ type dbHandler interface {
 
 var handler dbHandler
 
-func newMemoryHandler() dbHandler {
-	m := &memoryHandler{}
-	m.companyMap = make(map[int]*Company)
-	return m
-}
-
 func init() {
-	handler = newMemoryHandler()
+	// handler = newMemoryHandler()
+	handler = newMySqlHandler()
 }
 
 func GetCompanies() []*Company {

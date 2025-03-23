@@ -27,3 +27,9 @@ func (m *memoryHandler) removeCompany(id int) bool {
 		return false
 	}
 }
+
+func newMemoryHandler() dbHandler {
+	m := &memoryHandler{}
+	m.companyMap = make(map[int]*Company)
+	return m
+}
